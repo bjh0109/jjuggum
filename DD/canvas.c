@@ -77,5 +77,5 @@ void print_status(void) {
 }
 
 void dialog(char message[]){
-	//hello
+	//hello ckckck
 }
