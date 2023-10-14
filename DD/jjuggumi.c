@@ -31,6 +31,7 @@ int jjuggumi_init(void) {
 int main(void) {
 	jjuggumi_init();
 	sample();
+	printf("hello world");
 	//mugunghwa();
 	//nightgame();
 	//juldarigi();
