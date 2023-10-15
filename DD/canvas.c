@@ -117,8 +117,7 @@ void dialog(char message[]) {
 	}
 
 	gotoxy(center_row + 1, box_start_col + 2);
-	int messageLength = sizeof(message);
-	for (int disappear = 0; disappear < messageLength + 2; disappear++) {
+	for (int disappear = 0; disappear < msg_length + 2; disappear++) {
 		printf(" ");
 	}
 
