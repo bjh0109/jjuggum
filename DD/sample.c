@@ -44,7 +44,7 @@ void move_manual(key_t key) {
 	case K_UP: dir = DIR_UP; break;
 	case K_DOWN: dir = DIR_DOWN; break;
 	case K_LEFT: dir = DIR_LEFT; break;
-	case K_RIGHT: dir = DIR_RIGHT; break;	
+	case K_RIGHT: dir = DIR_RIGHT; break;
 	default: return;
 	}
 
@@ -98,11 +98,16 @@ void sample(void) {
 			move_manual(key);
 		}
 
-		// player 1 부터는 랜덤으로 움직임(8방향)
 		for (int i = 1; i < n_player; i++) {
 			if (tick % period[i] == 0) {
 				move_random(i, -1);
 			}
+		}
+
+		// tick 값이 500의 배수일 때만 READY 메시지 출력
+		if (tick % 500 == 0 && tick != 0) {
+			dialog("READY");
+			Sleep(1000);
 		}
 
 		display();
