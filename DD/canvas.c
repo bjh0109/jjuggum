@@ -79,54 +79,59 @@ void print_status(void) {
 }
 
 void dialog(char message[]) {
-	// 현재 버퍼 상태 저장
-	char temp_buf[ROW_MAX][COL_MAX];
-	int center_row = N_ROW / 2;
-	int center_col = N_COL / 2;
-	int msg_length = strlen(message);
-	int box_width = max(msg_length, 18) + 4;
-	int box_start_col = center_col - box_width / 2;
-	int box_end_col = center_col + box_width / 2;
+    // 현재 버퍼 상태 저장
+    char temp_buf[ROW_MAX][COL_MAX];
+    int center_row = N_ROW / 2;
+    int center_col = N_COL / 2;
+    int msg_length = strlen(message);
+    int box_width = max(msg_length, 18) + 4;
+    int box_start_col = center_col - box_width / 2;
+    int box_end_col = center_col + box_width / 2;
 
-	for (int i = 0; i < ROW_MAX; i++) {
-		for (int j = 0; j < COL_MAX; j++) {
-			temp_buf[i][j] = back_buf[i][j];
-		}
-	}
+    for (int i = 0; i < ROW_MAX; i++) {
+        for (int j = 0; j < COL_MAX; j++) {
+            temp_buf[i][j] = back_buf[i][j];
+        }
+    }
 
-	for (int i = DIALOG_DURATION_SEC; i >= 0; --i) {
-		Sleep(1000);
-		for (int row = center_row - 1; row <= center_row + 3; ++row) {
-			for (int col = box_start_col - 1; col <= box_end_col + 1; ++col) {
-				back_buf[row][col] = ' ';
-			}
-		}
-		for (int row = center_row - 1; row <= center_row + 3; ++row) {
-			for (int col = box_start_col - 1; col <= box_end_col + 1; ++col) {
-				if (row == center_row - 1 || row == center_row + 3 || col == box_start_col - 1 || col == box_end_col + 1)
-					back_buf[row][col] = '*';
-			}
-		}
+    // 대화 상자를 한 번만 표시
+    for (int i = DIALOG_DURATION_SEC; i >= 0; --i) {
+        if (i != DIALOG_DURATION_SEC) {
+            Sleep(1000);
+        }
 
-		gotoxy(center_row + 1, box_start_col + 4);
-		printf("%s", message);
-		gotoxy(center_row + 1, box_start_col + 2);
-		printf("%d ", i);
+        for (int row = center_row - 1; row <= center_row + 3; ++row) {
+            for (int col = box_start_col - 1; col <= box_end_col + 1; ++col) {
+                back_buf[row][col] = ' ';
+            }
+        }
+        for (int row = center_row - 1; row <= center_row + 3; ++row) {
+            for (int col = box_start_col - 1; col <= box_end_col + 1; ++col) {
+                if (row == center_row - 1 || row == center_row + 3 || col == box_start_col - 1 || col == box_end_col + 1)
+                    back_buf[row][col] = '*';
+            }
+        }
 
-		draw();
-	}
+        gotoxy(center_row + 1, box_start_col + 4);
+        printf("%s", message);
+        gotoxy(center_row + 1, box_start_col + 2);
+        printf("%d ", i);
 
-	gotoxy(center_row + 1, box_start_col + 2);
-	for (int disappear = 0; disappear < msg_length + 2; disappear++) {
-		printf(" ");
-	}
+        draw();
+    }
 
-	// 원래 상태로 복구
-	for (int i = 0; i < ROW_MAX; i++) {
-		for (int j = 0; j < COL_MAX; j++) {
-			back_buf[i][j] = temp_buf[i][j];
-		}
-	}
+    gotoxy(center_row + 1, box_start_col + 2);
+    for (int disappear = 0; disappear < msg_length + 2; disappear++) {
+        printf(" ");
+    }
 
-	display();
+    // 원래 상태로 복구
+    for (int i = 0; i < ROW_MAX; i++) {
+        for (int j = 0; j < COL_MAX; j++) {
+            back_buf[i][j] = temp_buf[i][j];
+        }
+    }
+
+    display();
 }
+
