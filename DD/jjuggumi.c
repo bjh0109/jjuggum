@@ -28,8 +28,13 @@ int jjuggumi_init(void) {
 	return 0;
 }
 
+void intro(void) {
+	printf("쭈꾸미게임 시작");
+}
+
 int main(void) {
 	jjuggumi_init();
+	intro();
 	sample();
 	//mugunghwa();
 	//nightgame();
