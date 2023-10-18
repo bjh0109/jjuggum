@@ -77,25 +77,27 @@ void move_random_1(int player, int dir) {
 	int a = 0, b = 0, c = 0, d = 0;
 	int x[4] = {0,-1,1,0};
 	int y[4] = {-1.0,0,0};
-	int i;
+	int r=0;
 	do {
-		i = randint(0, 101);
-		if (0 < i <= 70 && a==0) {
+		r = randint(0, 101);
+		gotoxy(N_ROW + 3, 0);
+		printf("%d", r);
+		if (0 < r <= 70 && a==0) {
 			nx = px[p] + x[0];
 			ny = py[p] + y[0];
 			a += 1;
 		}
-		else if (70 < i <= 80 && b==0) {
+		else if (70 < r<= 80 && b==0) {
 			nx = px[p] + x[1];
 			ny = py[p] + y[1];
 			b += 1;
 		}
-		else if (80 < i <= 90 && c==0) {
+		else if (80 < r <= 90 && c==0) {
 			nx = px[p] + x[2];
 			ny = py[p] + y[2];
 			c += 1;
 		}
-		else if (90 < i <= 100 && d==0) {
+		else if (90 < r<= 100 && d==0) {
 			nx = px[p] + x[3];
 			ny = py[p] + y[3];
 			d += 1;
@@ -105,6 +107,8 @@ void move_random_1(int player, int dir) {
 	b = 0;
 	c = 0;
 	d = 0;
+	r = 0;
+	//Sleep(1000);
 	move_tail_1(p, nx, ny);
 
 }
@@ -141,7 +145,7 @@ void mugunghwa(void) {
 
 	system("cls");
 	display();
-	//Sleep(1000);
+	Sleep(1000);
 	while (1) {
 		// player 0만 손으로 움직임(4방향)
 		key_t key = get_key();
@@ -158,11 +162,11 @@ void mugunghwa(void) {
 			}
 		}
 
-		// tick 값이 500의 배수일 때만 ready 메시지 출력
-		if (tick % 1000 == 0 && tick != 0) {
-			dialog("player 1, 2, 3, 4,5,6,7,8,9 dead");
-			Sleep(1000);
-		}
+		//// tick 값이 500의 배수일 때만 ready 메시지 출력
+		//if (tick % 1000 == 0 && tick != 0) {
+		//	dialog("player 1, 2, 3, 4,5,6,7,8,9 dead");
+		//	Sleep(1000);
+		//}
 
 		display();
 		Sleep(10);

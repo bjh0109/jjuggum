@@ -105,7 +105,7 @@ void sample(void) {
 		}
 
 		// tick 값이 500의 배수일 때만 READY 메시지 출력
-		if (tick % 1000 == 0 && tick != 0) {
+		if (tick == 500) {
 			dialog("READY");
 			Sleep(1000);
 		}
