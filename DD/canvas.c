@@ -6,7 +6,9 @@
 #include "jjuggumi.h"
 #include "canvas.h"
 
+
 #define DIALOG_DURATION_SEC		4
+
 
 void draw(void);
 void print_status(void);
@@ -35,10 +37,10 @@ void map_init(int n_row, int n_col) {
 	N_COL = n_col;
 	for (int i = 0; i < N_ROW; i++) {
 		// 대입문 이렇게 쓸 수 있는데 일부러 안 가르쳐줬음
-		back_buf[i][0] = back_buf[i][N_COL - 1] = '#';
+		back_buf[i][0] = back_buf[i][N_COL - 1] = '*';
 
 		for (int j = 1; j < N_COL - 1; j++) {
-			back_buf[i][j] = (i == 0 || i == N_ROW - 1) ? '#' : ' ';
+			back_buf[i][j] = (i == 0 || i == N_ROW - 1) ? '*' : ' ';
 		}
 	}
 }
@@ -60,6 +62,7 @@ void display(void) {
 	print_status();
 }
 
+//백버퍼 와 프론트 버퍼를 비교하여 같지 않으면 같게 만들고 printxy를 사용해 다른부분을 입력 해준다.
 void draw(void) {
 	for (int row = 0; row < N_ROW; row++) {
 		for (int col = 0; col < N_COL; col++) {
@@ -79,54 +82,58 @@ void print_status(void) {
 }
 
 void dialog(char message[]) {
-	// 현재 버퍼 상태 저장
-	char temp_buf[ROW_MAX][COL_MAX];
-	int center_row = N_ROW / 2;
-	int center_col = N_COL / 2;
-	int msg_length = strlen(message);
-	int box_width = max(msg_length, 18) + 4;
-	int box_start_col = center_col - box_width / 2;
-	int box_end_col = center_col + box_width / 2;
+    // 현재 버퍼 상태 저장
+    char temp_buf[ROW_MAX][COL_MAX];
+    int center_row = N_ROW / 2;
+    int center_col = N_COL / 2;
+    int msg_length = strlen(message);
+    int box_width = max(msg_length, 18) + 4;
+    int box_start_col = center_col - box_width / 2;
+    int box_end_col = center_col + box_width / 2;
 
-	for (int i = 0; i < ROW_MAX; i++) {
-		for (int j = 0; j < COL_MAX; j++) {
-			temp_buf[i][j] = back_buf[i][j];
-		}
-	}
+    for (int i = 0; i < ROW_MAX; i++) {
+        for (int j = 0; j < COL_MAX; j++) {
+            temp_buf[i][j] = back_buf[i][j];
+        }
+    }
 
-	for (int i = DIALOG_DURATION_SEC; i >= 0; --i) {
-		Sleep(1000);
-		for (int row = center_row - 1; row <= center_row + 3; ++row) {
-			for (int col = box_start_col - 1; col <= box_end_col + 1; ++col) {
-				back_buf[row][col] = ' ';
-			}
-		}
-		for (int row = center_row - 1; row <= center_row + 3; ++row) {
-			for (int col = box_start_col - 1; col <= box_end_col + 1; ++col) {
-				if (row == center_row - 1 || row == center_row + 3 || col == box_start_col - 1 || col == box_end_col + 1)
-					back_buf[row][col] = '*';
-			}
-		}
+    // 대화 상자를 한 번만 표시
+    for (int i = DIALOG_DURATION_SEC; i >= 0; --i) {
+        if (i != DIALOG_DURATION_SEC) {
+            Sleep(1000);
+        }
 
-		gotoxy(center_row + 1, box_start_col + 4);
-		printf("%s", message);
-		gotoxy(center_row + 1, box_start_col + 2);
-		printf("%d ", i);
+        for (int row = center_row - 2; row <= center_row + 2; ++row) {
+            for (int col = box_start_col - 2; col <= box_end_col ; ++col) {
+                back_buf[row][col] = ' ';
+            }
+        }
+        for (int row = center_row - 2; row <= center_row + 2; ++row) {
+            for (int col = box_start_col - 2; col <= box_end_col; ++col) {
+                if (row == center_row - 2 || row == center_row +2 || col == box_start_col - 2 || col == box_end_col)
+                    back_buf[row][col] = '*';
+            }
+        }
 
-		draw();
-	}
+        gotoxy(center_row , box_start_col + 3);
+        printf("%s", message);
+        gotoxy(center_row , box_start_col + 1);
+        printf("%d ", i);
 
-	gotoxy(center_row + 1, box_start_col + 2);
-	for (int disappear = 0; disappear < msg_length + 2; disappear++) {
-		printf(" ");
-	}
+        draw();
+    }
 
-	// 원래 상태로 복구
-	for (int i = 0; i < ROW_MAX; i++) {
-		for (int j = 0; j < COL_MAX; j++) {
-			back_buf[i][j] = temp_buf[i][j];
-		}
-	}
+    gotoxy(center_row , box_start_col + 1);
+    for (int disappear = 0; disappear < msg_length + 2; disappear++) {
+        printf(" ");
+    }
 
-	display();
+    // 원래 상태로 복구
+    for (int i = 0; i < ROW_MAX; i++) {
+        for (int j = 0; j < COL_MAX; j++) {
+            back_buf[i][j] = temp_buf[i][j];
+        }
+    }
+
+    display();
 }
