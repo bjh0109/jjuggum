@@ -35,9 +35,9 @@ void intro_color(char const* const text, int color);
 void intro(void);
 
 // 미니게임
+void intro(void);
 void sample(void);
-//void mugunghwa(void);
-//void mugunghwa(void);
+void mugunghwa(void);
 //void nightgame(void);
 //void juldarigi(void);
 //void jebi(void);
