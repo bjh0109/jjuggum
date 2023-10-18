@@ -28,29 +28,56 @@ int jjuggumi_init(void) {
 	return 0;
 }
 
+
+void text_color(int color) {
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
+
+void print_color_text(char const* const text, int color) {
+	text_color(color);
+	printf(text);
+	text_color(white);
+}
+
+void intro_color(char const* const text, int color) {
+	printf("|");
+	print_color_text(text, color);
+	printf("|\n");
+}
+
 void intro(void) {
 	printf(".--------------------------------------------------------------.\n");
 	printf("|                                                              |\n");
-	printf("|       _     _          ____  ____         __  __ _           |\n");
-	printf("|      | |   | |_   _   / ___|/ ___|_   _  |  \\/  (_)          |\n");
-	printf("|   _  | |_  | | | | | | |  _| |  _| | | | | |\\/| | |          |\n");
-	printf("|  | |_| | |_| | |_| | | |_| | |_| | |_| | | |  | | |          |\n");
-	printf("|   \\___/ \\___/ \\__,_|  \\____|\\____|\\__,_| |_|  |_|_|          |\n");
-	printf("|    ____    _    __  __ _____   ____ _____  _    ____ _____   |\n");
-	printf("|   / ___|  / \\  |  \\/  | ____| / ___|_   _|/ \\  |  _ \\_   _|  |\n");
-	printf("|  | |  _  / _ \\ | |\\/| |  _|   \\___ \\ | | / _ \\ | |_) || |    |\n");
-	printf("|  | |_| |/ ___ \\| |  | | |___   ___) || |/ ___ \\|  _ < | |    |\n");
-	printf("|   \\____/_/   \\_\\_|  |_|_____| |____/ |_/_/   \\_\\_| \\_\\|_|    |\n");
+	Sleep(35);
+	intro_color("       _     _          ____  ____         __  __ _           ", red);
+	Sleep(45);
+	intro_color("      | |   | |_   _   / ___|/ ___|_   _  |  \\/  (_)          ", red);
+	Sleep(55);
+	intro_color("   _  | |_  | | | | | | |  _| |  _| | | | | |\\/| | |          ", red);
+	Sleep(75);
+	intro_color("  | |_| | |_| | |_| | | |_| | |_| | |_| | | |  | | |          ", red);
+	Sleep(85);
+	intro_color("   \\___/ \\___/ \\__,_|  \\____|\\____|\\__,_| |_|  |_|_|          ", red);
+	Sleep(95);
+	intro_color("    ____    _    __  __ _____   ____ _____  _    ____ _____   ", yellow);
+	Sleep(105);
+	intro_color("   / ___|  / \\  |  \\/  | ____| / ___|_   _|/ \\  |  _ \\_   _|  ", yellow);
+	Sleep(115);
+	intro_color("  | |  _  / _ \\ | |\\/| |  _|   \\___ \\ | | / _ \\ | |_) || |    ", yellow);
+	Sleep(125);
+	intro_color("  | |_| |/ ___ \\| |  | | |___   ___) || |/ ___ \\|  _ < | |    ", yellow);
+	Sleep(135);
+	intro_color("   \\____/_/   \\_\\_|  |_|_____| |____/ |_/_/   \\_\\_| \\_\\|_|    ", yellow);
 	printf("|                                                              |\n");
 	printf("'--------------------------------------------------------------'\n");
-
+	Sleep(1500);
 }
 
 int main(void) {
 	jjuggumi_init();
 	intro();
-	//sample();
-	mugunghwa();
+	sample();
+	//mugunghwa();
 	//nightgame();
 	//juldarigi();
 	//jebi();
