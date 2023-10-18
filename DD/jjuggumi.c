@@ -43,14 +43,14 @@ void intro(void) {
 	printf("|   \\____/_/   \\_\\_|  |_|_____| |____/ |_/_/   \\_\\_| \\_\\|_|    |\n");
 	printf("|                                                              |\n");
 	printf("'--------------------------------------------------------------'\n");
-	Sleep(5000);
+
 }
 
 int main(void) {
 	jjuggumi_init();
 	intro();
-	sample();
-	//mugunghwa();
+	//sample();
+	mugunghwa();
 	//nightgame();
 	//juldarigi();
 	//jebi();
