@@ -160,16 +160,16 @@ void mugunghwa(void) {
 
 void print_mugung(void) {
 	gotoxy(N_ROW + 1, 0);
-	printf("¹« "); Sleep(350);
-	printf("±Ã "); Sleep(400);
-	printf("È­ "); Sleep(500);
-	printf("²É "); Sleep(550);
-	printf("ÀÌ "); Sleep(600);
-	printf("ÇÇ "); Sleep(450);
-	printf("¾ú "); Sleep(250);
-	printf("½À "); Sleep(200);
-	printf("´Ï "); Sleep(100);
-	printf("´Ù"); Sleep(3000);
+	printf("a "); Sleep(350);
+	printf("b "); Sleep(400);
+	printf("c "); Sleep(500);
+	printf("d "); Sleep(550);
+	printf("e "); Sleep(600);
+	printf("f "); Sleep(450);
+	printf("g "); Sleep(250);
+	printf("h "); Sleep(200);
+	printf("i "); Sleep(100);
+	printf("j"); Sleep(3000);
 	gotoxy(N_ROW + 1, 0);
 	for (int i = 1; i < 30; i++) {
 		printf(" ");

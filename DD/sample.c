@@ -1,3 +1,5 @@
+// Sample.c ì˜¤ë¥˜ìˆëŠ” íŒŒì¼... ì£¼ì„ í•´ì œí•˜ë©´ ì˜¤ë¥˜ë‚©ë‹ˆë‹¤.
+
 //#include "jjuggumi.h"
 //#include "canvas.h"
 //#include "keyin.h"
@@ -158,16 +160,16 @@
 //
 //void print_mugung(void) {
 //	gotoxy(N_ROW + 1, 0);
-//	printf("¹« "); Sleep(350);
-//	printf("±Ã "); Sleep(400);
+//	printf("ï¿½ï¿½ "); Sleep(350);
+//	printf("ï¿½ï¿½ "); Sleep(400);
 //	printf("È­ "); Sleep(500);
-//	printf("²É "); Sleep(550);
-//	printf("ÀÌ "); Sleep(600);
-//	printf("ÇÇ "); Sleep(450);
-//	printf("¾ú "); Sleep(250);
-//	printf("½À "); Sleep(200);
-//	printf("´Ï "); Sleep(100);
-//	printf("´Ù"); Sleep(3000);
+//	printf("ï¿½ï¿½ "); Sleep(550);
+//	printf("ï¿½ï¿½ "); Sleep(600);
+//	printf("ï¿½ï¿½ "); Sleep(450);
+//	printf("ï¿½ï¿½ "); Sleep(250);
+//	printf("ï¿½ï¿½ "); Sleep(200);
+//	printf("ï¿½ï¿½ "); Sleep(100);
+//	printf("ï¿½ï¿½"); Sleep(3000);
 //	gotoxy(N_ROW + 1, 0);
 //	for (int i = 1; i < 30; i++) {
 //		printf(" ");

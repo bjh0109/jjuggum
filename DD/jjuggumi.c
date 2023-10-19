@@ -1,4 +1,4 @@
-// 2023-2 고급프로그래밍 과제: 쭈꾸미 게임
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -9,7 +9,6 @@
 
 int jjuggumi_init(void);
 
-// low 이상 high 이하 난수를 발생시키는 함수
 int randint(int low, int high) {
 	int rnum = rand() % (high - low + 1) + low;
 	return rnum;
@@ -18,7 +17,7 @@ int randint(int low, int high) {
 int jjuggumi_init(void) {
 	srand((unsigned int)time(NULL));
 
-	printf("플레이어 수: ");
+	printf("Please enter the number of palyers: ");
 	scanf_s("%d", &n_player);
 
 	n_alive = n_player;
