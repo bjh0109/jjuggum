@@ -9,6 +9,16 @@
 #define DIR_LEFT	2
 #define DIR_RIGHT	3
 
+/// 맵 안에서 카메라가 표시될 시작과 끝 위치
+#define Camera_start_y 5
+#define Camera_end_y 8
+#define Camera_start_x 1
+
+/// 무궁화 꽃이 피었습니 를 외칠 때 카메라 아이콘
+#define Camera_not_working_icon '#'
+/// 무궁화 꽃이 피었습니다를 외칠 때 카메라 아이콘
+#define Camera_working_icon '@'
+
 void sample_init_1(void);
 void move_manual_1(key_t key);
 void move_random_1(int i, int dir);
@@ -34,13 +44,9 @@ void sample_init_1(void) {
 		back_buf[px[i]][py[i]] = '0' + i;  // (0 .. n_player-1)
 	}
 
-
-	back_buf[5][1] = '#';
-	back_buf[6][1] = '#';
-	back_buf[7][1] = '#';
-	back_buf[8][1] = '#';
-
-
+	for (int y = Camera_start_y; y < Camera_end_y + 1; y++) {
+		back_buf[y][Camera_start_x] = Camera_not_working_icon;
+	}
 
 	tick = 0;
 }
@@ -175,5 +181,24 @@ void print_mugung(void) {
 		printf(" ");
 	}
 	Sleep(1000);
+
+}
+
+
+/// <summary>
+/// "무궁화 꽃이 피었습니"
+///    이후 "다"를 외친다면,
+/// 다를 외친 후 3초동안 # -> @로 카메라가 변환되는 함수입니다.
+/// </summary>
+void turn_of_camera() {
+	
+}
+
+
+/// <summary>
+/// "무궁화 꽃이 피었습니다"를 외친 후 카메라가 돌아갔을 때
+///		플레이어가 움직였는지, 움직였다면 어느 플레이어가 움직였는지를 파악하는 코드입니다.
+/// </summary>
+void check_player_moving_when_camera_turned() {
 
 }
