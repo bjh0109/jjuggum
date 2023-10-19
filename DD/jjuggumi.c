@@ -73,11 +73,14 @@ void intro(void) {
 	Sleep(1500);
 }
 
+
 int main(void) {
+	
 	jjuggumi_init();
+
 	intro();
-	//sample();	
-	//mugunghwa();
+	//sample();
+	mugunghwa();
 	//nightgame();
 	//juldarigi();
 	//jebi();

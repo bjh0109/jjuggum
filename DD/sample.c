@@ -64,7 +64,7 @@ void move_random(int player, int dir) {
     int p = player;  // 이름이 길어서...
     int nx, ny;  // 움직여서 다음에 놓일 자리
 
-    // 움직일 공간이 없는 경우는 없다고 가정(무한 루프에 빠짐)    
+    // 움직일 공간이 없는 경우는 없다고 가정(무한 루프에 빠짐)
 
     do {
         nx = px[p] + randint(-1, 1);
