@@ -36,6 +36,7 @@ void map_init(int n_row, int n_col) {
 	N_ROW = n_row;
 	N_COL = n_col;
 	for (int i = 0; i < N_ROW; i++) {
+
 		// 대입문 이렇게 쓸 수 있는데 일부러 안 가르쳐줬음
 		back_buf[i][0] = back_buf[i][N_COL - 1] = '*';
 
