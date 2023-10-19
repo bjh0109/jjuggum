@@ -17,6 +17,7 @@ void print_mugung(void);
 
 int px[PLAYER_MAX], py[PLAYER_MAX], period[PLAYER_MAX];  // 각 플레이어 위치, 이동 주기
 
+//처음 시작
 void sample_init_1(void) {
 	map_init(14, 40);
 	int x, y;
@@ -44,6 +45,7 @@ void sample_init_1(void) {
 	tick = 0;
 }
 
+//0번 플레이어 움직이기
 void move_manual_1(key_t key) {
 	// 각 방향으로 움직일 때 x, y값 delta
 	static int dx[4] = { -1, 1, 0, 0 };
@@ -69,8 +71,7 @@ void move_manual_1(key_t key) {
 	move_tail_1(0, nx, ny);
 }
 
-// 0 <= dir < 4가 아니면 랜덤
-// 0 <= dir < 4가 아니면 랜덤
+//0제외 플레이어들 랜덤이동
 void move_random_1(int player, int dir) {
 	int p = player;  // 이름이 길어서...
 	int nx, ny;  // 움직여서 다음에 놓일 자리
@@ -95,7 +96,7 @@ void move_random_1(int player, int dir) {
 		nx = px[p];
 		ny = py[p];
 	}
-	r = 0;
+
 	// Check if the new position is placable
 	if (placable(nx, ny)) {
 		move_tail_1(p, nx, ny);
@@ -121,6 +122,7 @@ void move_tail_1(int player, int nx, int ny) {
 
 }
 
+//메인함수
 void mugunghwa(void) {
 	sample_init_1();
 
@@ -139,7 +141,7 @@ void mugunghwa(void) {
 		else if (key != K_UNDEFINED) {
 			move_manual_1(key);
 		}
-
+		//print_mugung();
 		if (tick >= 500) {
 			for (int i = 1; i < n_player; i++) {
 				if (tick % period[i] == 0) {
@@ -147,7 +149,7 @@ void mugunghwa(void) {
 				}
 			}
 		}
-		print_mugung();
+		
 		display();
 		Sleep(10);
 		tick += 10;
@@ -155,7 +157,7 @@ void mugunghwa(void) {
 }
 
 
-
+//무궁화꽃이피었습니다 출력함수
 void print_mugung(void) {
 	gotoxy(N_ROW + 1, 0);
 	printf("무 "); Sleep(350);
