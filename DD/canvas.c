@@ -6,25 +6,27 @@
 #include "jjuggumi.h"
 #include "canvas.h"
 
+
 #define DIALOG_DURATION_SEC		4
+
 
 void draw(void);
 void print_status(void);
 
-// (zero-base) rowÇà, col¿­·Î Ä¿¼­ ÀÌµ¿
+// (zero-base) rowí–‰, colì—´ë¡œ ì»¤ì„œ ì´ë™
 void gotoxy(int row, int col) {
 	COORD pos = { col,row };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
-// rowÇà, col¿­¿¡ ch Ãâ·Â
+// rowí–‰, colì—´ì— ch ì¶œë ¥
 void printxy(char ch, int row, int col) {
 	gotoxy(row, col);
 	printf("%c", ch);
 }
 
 void map_init(int n_row, int n_col) {
-	// µÎ ¹öÆÛ¸¦¸¦ ¿ÏÀüÈ÷ ºñ¿ì±â
+	// ë‘ ë²„í¼ë¥¼ë¥¼ ì™„ì „íˆ ë¹„ìš°ê¸°
 	for (int i = 0; i < ROW_MAX; i++) {
 		for (int j = 0; j < COL_MAX; j++) {
 			back_buf[i][j] = front_buf[i][j] = ' ';
@@ -34,7 +36,8 @@ void map_init(int n_row, int n_col) {
 	N_ROW = n_row;
 	N_COL = n_col;
 	for (int i = 0; i < N_ROW; i++) {
-		// ´ëÀÔ¹® ÀÌ·¸°Ô ¾µ ¼ö ÀÖ´Âµ¥ ÀÏºÎ·¯ ¾È °¡¸£ÃÄÁáÀ½
+
+		// ëŒ€ì…ë¬¸ ì´ë ‡ê²Œ ì“¸ ìˆ˜ ìˆëŠ”ë° ì¼ë¶€ëŸ¬ ì•ˆ ê°€ë¥´ì³ì¤¬ìŒ
 		back_buf[i][0] = back_buf[i][N_COL - 1] = '*';
 
 		for (int j = 1; j < N_COL - 1; j++) {
@@ -43,7 +46,7 @@ void map_init(int n_row, int n_col) {
 	}
 }
 
-// back_buf[row][col]ÀÌ ÀÌµ¿ÇÒ ¼ö ÀÖ´Â ÀÚ¸®ÀÎÁö È®ÀÎÇÏ´Â ÇÔ¼ö
+// back_buf[row][col]ì´ ì´ë™í•  ìˆ˜ ìˆëŠ” ìë¦¬ì¸ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
 bool placable(int row, int col) {
 	if (row < 0 || row >= N_ROW ||
 		col < 0 || col >= N_COL ||
@@ -53,13 +56,14 @@ bool placable(int row, int col) {
 	return true;
 }
 
-// »ó´Ü¿¡ ¸ÊÀ», ÇÏ´Ü¿¡´Â ÇöÀç »óÅÂ¸¦ Ãâ·Â
+// ìƒë‹¨ì— ë§µì„, í•˜ë‹¨ì—ëŠ” í˜„ì¬ ìƒíƒœë¥¼ ì¶œë ¥
 void display(void) {
 	draw();
-	gotoxy(N_ROW + 4, 0);  // Ãß°¡·Î Ç¥½ÃÇÒ Á¤º¸°¡ ÀÖÀ¸¸é ¸Ê°ú »óÅÂÃ¢ »çÀÌÀÇ ºó °ø°£¿¡ Ãâ·Â
+	gotoxy(N_ROW + 4, 0);  // ì¶”ê°€ë¡œ í‘œì‹œí•  ì •ë³´ê°€ ìˆìœ¼ë©´ ë§µê³¼ ìƒíƒœì°½ ì‚¬ì´ì˜ ë¹ˆ ê³µê°„ì— ì¶œë ¥
 	print_status();
 }
 
+//ë°±ë²„í¼ ì™€ í”„ë¡ íŠ¸ ë²„í¼ë¥¼ ë¹„êµí•˜ì—¬ ê°™ì§€ ì•Šìœ¼ë©´ ê°™ê²Œ ë§Œë“¤ê³  printxyë¥¼ ì‚¬ìš©í•´ ë‹¤ë¥¸ë¶€ë¶„ì„ ì…ë ¥ í•´ì¤€ë‹¤.
 void draw(void) {
 	for (int row = 0; row < N_ROW; row++) {
 		for (int col = 0; col < N_COL; col++) {
@@ -79,7 +83,7 @@ void print_status(void) {
 }
 
 void dialog(char message[]) {
-    // ÇöÀç ¹öÆÛ »óÅÂ ÀúÀå
+    // í˜„ì¬ ë²„í¼ ìƒíƒœ ì €ì¥
     char temp_buf[ROW_MAX][COL_MAX];
     int center_row = N_ROW / 2;
     int center_col = N_COL / 2;
@@ -94,38 +98,43 @@ void dialog(char message[]) {
         }
     }
 
-    // ´ëÈ­ »óÀÚ¸¦ ÇÑ ¹ø¸¸ Ç¥½Ã
+    // ëŒ€í™” ìƒìë¥¼ í•œ ë²ˆë§Œ í‘œì‹œ
     for (int i = DIALOG_DURATION_SEC; i >= 0; --i) {
         if (i != DIALOG_DURATION_SEC) {
             Sleep(1000);
         }
 
-        for (int row = center_row - 1; row <= center_row + 3; ++row) {
-            for (int col = box_start_col - 1; col <= box_end_col + 1; ++col) {
+        for (int row = center_row - 2; row <= center_row + 2; ++row) {
+            for (int col = box_start_col - 2; col <= box_end_col ; ++col) {
                 back_buf[row][col] = ' ';
             }
         }
-        for (int row = center_row - 1; row <= center_row + 3; ++row) {
-            for (int col = box_start_col - 1; col <= box_end_col + 1; ++col) {
-                if (row == center_row - 1 || row == center_row + 3 || col == box_start_col - 1 || col == box_end_col + 1)
+        for (int row = center_row - 2; row <= center_row + 2; ++row) {
+            for (int col = box_start_col - 2; col <= box_end_col; ++col) {
+                if (row == center_row - 2 || row == center_row +2 || col == box_start_col - 2 || col == box_end_col)
+
                     back_buf[row][col] = '*';
             }
         }
 
-        gotoxy(center_row + 1, box_start_col + 4);
+
+        gotoxy(center_row , box_start_col + 3);
         printf("%s", message);
-        gotoxy(center_row + 1, box_start_col + 2);
+        gotoxy(center_row , box_start_col + 1);
+
         printf("%d ", i);
 
         draw();
     }
 
-    gotoxy(center_row + 1, box_start_col + 2);
+
+    gotoxy(center_row , box_start_col + 1);
+
     for (int disappear = 0; disappear < msg_length + 2; disappear++) {
         printf(" ");
     }
 
-    // ¿ø·¡ »óÅÂ·Î º¹±¸
+    // ì›ë˜ ìƒíƒœë¡œ ë³µêµ¬
     for (int i = 0; i < ROW_MAX; i++) {
         for (int j = 0; j < COL_MAX; j++) {
             back_buf[i][j] = temp_buf[i][j];

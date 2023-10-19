@@ -6,9 +6,9 @@
 
 #define PLAYER_MAX		10
 
-bool player[PLAYER_MAX];  // ±âº»°ª true, Å»¶ôÇÏ¸é false
+bool player[PLAYER_MAX];  // ê¸°ë³¸ê°’ true, íƒˆë½í•˜ë©´ false
 int n_player, n_alive;
-int tick;  // ½Ã°è
+int tick;  // ì‹œê³„
 
 typedef enum Color_type {
 	black = 0,  	//0
@@ -34,10 +34,12 @@ void print_color_text(char const* const text, int color);
 void intro_color(char const* const text, int color);
 void intro(void);
 
-// ¹Ì´Ï°ÔÀÓ
+// ë¯¸ë‹ˆê²Œì„
+
 //void sample(void);
 void mugunghwa(void);
 //void mugunghwa(void);
+
 //void nightgame(void);
 //void juldarigi(void);
 //void jebi(void);
