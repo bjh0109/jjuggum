@@ -76,7 +76,7 @@ void intro(void) {
 int main(void) {
 	jjuggumi_init();
 	intro();
-	sample();	
+	//sample();	
 	//mugunghwa();
 	//nightgame();
 	//juldarigi();
