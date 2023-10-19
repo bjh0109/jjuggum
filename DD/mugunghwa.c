@@ -128,7 +128,7 @@ void mugunghwa(void) {
 	system("cls");
 	display();
 	Sleep(1000);
-	dialog("READY");
+	//dialog("READY");
 	Sleep(1000);
 
 	while (1) {
@@ -140,40 +140,63 @@ void mugunghwa(void) {
 		else if (key != K_UNDEFINED) {
 			move_manual_1(key);
 		}
-		//print_mugung();
+		
 		for (int i = 1; i < n_player; i++) {
 			if (tick % period[i] == 0) {
 					move_random_1(i, -1);
 			}
 		}
-		
+		if (tick >= 5401) {
+			tick = 0;
+		}
+		print_mugung(tick);
 
 		display();
 		Sleep(10);
 		tick += 10;
-		gotoxy(N_ROW + 1, 0);
+		gotoxy(N_ROW + 2, 0);
 		printf("%d", tick);
-
 	}
 }
 
 
-void print_mugung(void) {
+void print_mugung(int msec) {
 	gotoxy(N_ROW + 1, 0);
-	printf("¹« "); Sleep(350);
-	printf("±Ã "); Sleep(400);
-	printf("È­ "); Sleep(500);
-	printf("²É "); Sleep(550);
-	printf("ÀÌ "); Sleep(600);
-	printf("ÇÇ "); Sleep(450);
-	printf("¾ú "); Sleep(250);
-	printf("½À "); Sleep(200);
-	printf("´Ï "); Sleep(100);
-	printf("´Ù"); Sleep(3000);
-	gotoxy(N_ROW + 1, 0);
-	for (int i = 1; i < 30; i++) {
-		printf(" ");
+	if (msec == 500) {
+		printf("¹« ");
 	}
-	Sleep(1000);
+	if (msec == 800) {
+		printf("¹« ±Ã ");
+	}
+	if (msec == 1100) {
+		printf("¹« ±Ã È­ ");
+	}
+	if (msec == 1300) {
+		printf("¹« ±Ã È­ ²É ");
+	}
+	if (msec == 1600) {
+		printf("¹« ±Ã È­ ²É ÀÌ ");
+	}
+	if (msec == 1750) {
+		printf("¹« ±Ã È­ ²É ÀÌ ÇÇ ");
+	}
+	if (msec == 1900) {
+		printf("¹« ±Ã È­ ²É ÀÌ ÇÇ ¾ú ");
+	}
+	if (msec == 2100) {
+		printf("¹« ±Ã È­ ²É ÀÌ ÇÇ ¾ú ½À ");
+	}
+	if (msec == 2200) {
+		printf("¹« ±Ã È­ ²É ÀÌ ÇÇ ¾ú ½À ´Ï ");
+	}
+	if (msec == 2400) {
+		printf("¹« ±Ã È­ ²É ÀÌ ÇÇ ¾ú ½À ´Ï ´Ù");
+	}
+	if (msec == 5400) {
+		gotoxy(N_ROW + 1, 0);
+		for (int i = 1; i < 30; i++) {
+			printf(" ");
+		}
+	}
 
 }
