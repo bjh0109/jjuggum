@@ -1,4 +1,4 @@
-// 2023-2 °í±ŞÇÁ·Î±×·¡¹Ö °úÁ¦: ÂŞ²Ù¹Ì °ÔÀÓ
+// 2023-2 ê³ ê¸‰í”„ë¡œê·¸ë˜ë° ê³¼ì œ: ì­ˆê¾¸ë¯¸ ê²Œì„
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -10,9 +10,8 @@
 int jjuggumi_init(void);
 
 
+// low ì´ìƒ high ì´í•˜ ë‚œìˆ˜ë¥¼ ë°œìƒì‹œí‚¤ëŠ” í•¨ìˆ˜
 
-
-// low ÀÌ»ó high ÀÌÇÏ ³­¼ö¸¦ ¹ß»ı½ÃÅ°´Â ÇÔ¼ö
 int randint(int low, int high) {
 	int rnum = rand() % (high - low + 1) + low;
 	return rnum;
@@ -21,7 +20,7 @@ int randint(int low, int high) {
 int jjuggumi_init(void) {
 	srand((unsigned int)time(NULL));
 
-	printf("ÇÃ·¹ÀÌ¾î ¼ö: ");
+	printf("í”Œë ˆì´ì–´ ìˆ˜: ");
 	scanf_s("%d", &n_player);
 
 	n_alive = n_player;
