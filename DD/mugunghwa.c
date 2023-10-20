@@ -17,12 +17,13 @@ void move_manual_1(key_t key);
 void move_random_1(int i, int dir);
 void move_tail_2(int i, int nx, int ny);
 void young();
-
+void kill(int p);
+void kill_dialog(void);
 int px[PLAYER_MAX], py[PLAYER_MAX], period[PLAYER_MAX];  // 각 플레이어 위치, 이동 주기
 
 
 int b = 0;
-
+int c = 0;
 void sample_init_1(void) {
 	map_init(14, 30);
 	int x, y;
@@ -48,20 +49,6 @@ void sample_init_1(void) {
 
 
 
-	//과제 2에서 이것도 변수로 받게 바꿔야함(영희)
-	/*if (a == 0) {
-		back_buf[5][1] = '#';
-		back_buf[6][1] = '#';
-		back_buf[7][1] = '#';
-		back_buf[8][1] = '#';
-	}
-	else if (a == 1) {
-		back_buf[5][1] = '@';
-		back_buf[6][1] = '@';
-		back_buf[7][1] = '@';
-		back_buf[8][1] = '@';
-
-	}*/
 
 
 
@@ -89,8 +76,16 @@ void move_manual_1(key_t key) {
 	if (!placable(nx, ny)) {
 		return;
 	}
-
-	move_tail_2(0, nx, ny);
+	if (b == 1) {
+		move_tail_2(0, nx, ny);
+		display();
+		Sleep(500);
+		kill(0);
+		//kill_dialog();
+	}
+	else {
+		move_tail_2(0, nx, ny);
+	}
 }
 
 // 0 <= dir < 4가 아니면 랜덤
@@ -125,8 +120,27 @@ void move_random_1(int player, int dir) {
 		}
 	} while (!placable(nx, ny));
 
-	move_tail_2(p, nx, ny);
+	int kill_move = randint(1, 100);
 
+	if (b == 1 && kill_move >  90) {
+		move_tail_2(p, nx, ny);
+		display();
+		Sleep(500);
+		kill(p);
+		//kill_dialog();
+	}
+	else if(b == 0){
+		move_tail_2(p, nx, ny);
+	}
+}
+
+
+void kill_dialog(void) {
+	for (int i = 0; i < n_player; i++) {
+		if (player[i] == false) {
+			dialog("탈락");
+		}
+	}
 }
 
 void move_tail_2(int player, int nx, int ny) {
@@ -207,7 +221,6 @@ void young() {
 		back_buf[6][1] = '@';
 		back_buf[7][1] = '@';
 		back_buf[8][1] = '@';
-
 	}
 
 	if (tick % 7000 == 0) {
@@ -224,14 +237,19 @@ void young() {
 
 }
 
-
+void kill(int p) {
+			back_buf[px[p]][py[p]] = ' ';
+			player[p] = false;
+		}
 
 void pass1() {
 	for (int i = 0; i < n_player; i++) {
-		if ((px[i] == 4 && py[i] == 1) || (px[i] == 5 && py[i] == 2) || (px[i] == 6 && py[i] == 2) ||
-			(px[i] == 7 && py[i] == 2) || (px[i] == 8 && py[i] == 2) || (px[i] == 9 && py[i] == 1)) {
-			back_buf[px[i]][py[i]] = ' ';
-			pass_player[i] = true;
+		if (player[i] == true) {
+			if ((px[i] == 4 && py[i] == 1) || (px[i] == 5 && py[i] == 2) || (px[i] == 6 && py[i] == 2) ||
+				(px[i] == 7 && py[i] == 2) || (px[i] == 8 && py[i] == 2) || (px[i] == 9 && py[i] == 1)) {
+				back_buf[px[i]][py[i]] = ' ';
+				pass_player[i] = true;
+			}
 		}
 	}
 }
@@ -281,7 +299,7 @@ void mugunghwa(void) {
 		}
 
 		//// tick 값이 500의 배수일 때만 ready 메시지 출력
-		//if (tick % 1000 == 0 && tick != 0) {
+		//if (tick >= 500) {
 		//	dialog("player 1 dead");
 		//	Sleep(1000);
 		//}

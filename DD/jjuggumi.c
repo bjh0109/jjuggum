@@ -1,4 +1,4 @@
-
+﻿
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -20,7 +20,7 @@ int randint(int low, int high) {
 int jjuggumi_init(void) {
 	srand((unsigned int)time(NULL));
 
-	printf("Please enter the number of palyers: ");
+	printf("플레이어 수: ");
 	scanf_s("%d", &n_player);
 
 	n_alive = n_player;

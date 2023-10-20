@@ -1,0 +1,11 @@
+﻿'DD.exe'(Win32): 'C:\Users\hong3\source\repos\jjuggum\x64\Debug\DD.exe'을(를) 로드했습니다. 기호가 로드되었습니다.
+'DD.exe'(Win32): 'C:\Windows\System32\ntdll.dll'을(를) 로드했습니다. 
+'DD.exe'(Win32): 'C:\Windows\System32\kernel32.dll'을(를) 로드했습니다. 
+'DD.exe'(Win32): 'C:\Windows\System32\KernelBase.dll'을(를) 로드했습니다. 
+'DD.exe'(Win32): 'C:\Windows\System32\vcruntime140d.dll'을(를) 로드했습니다. 
+'DD.exe'(Win32): 'C:\Windows\System32\ucrtbased.dll'을(를) 로드했습니다. 
+0x468 스레드가 종료되었습니다(코드: 0 (0x0)).
+0x3c3c 스레드가 종료되었습니다(코드: 3221225786 (0xc000013a)).
+0x508c 스레드가 종료되었습니다(코드: 3221225786 (0xc000013a)).
+0x4530 스레드가 종료되었습니다(코드: 3221225786 (0xc000013a)).
+'[8424] DD.exe' 프로그램이 종료되었습니다(코드: 3221225786 (0xc000013a)).
