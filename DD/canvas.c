@@ -77,6 +77,7 @@ void draw(void) {
 
 void print_status(void) {
 	printf("no. of players left: %d\n", n_alive);
+
 	for (int p = 0; p < n_player; p++) {
 		printf("player %2d: %5s\n", p, player[p] ? "alive" : "DEAD");
 	}
@@ -109,7 +110,6 @@ void dialog(char message[]) {
         for (int row = center_row - 2; row <= center_row + 2; ++row) {
             for (int col = box_start_col - 2; col <= box_end_col; ++col) {
                 if (row == center_row - 2 || row == center_row +2 || col == box_start_col - 2 || col == box_end_col)
-
                     back_buf[row][col] = '*';
             }
         }

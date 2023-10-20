@@ -16,8 +16,9 @@
 #define DIR_LEFT	2
 #define DIR_RIGHT	3
 
+
 #define MuGungWha_next_keyword_present_seconds 3
-/// 콘솔창에 문자열을 출력하는 sleep 단위 (메인스레드 sleep 시간)
+/// 肄李쎌 臾몄댁 異�ν sleep ⑥ (硫몄ㅻ sleep 媛)
 #define Console_print_frame_rate_unit 10
 
 
@@ -44,7 +45,7 @@ typedef enum Camera_checking_state_when_game_paused {
 
 /*
 * ********* ********* ********* *
-*          함수명 선언          *
+*          ⑥紐           *
 * ********* ********* ********* *
 */
 void sample_init_1(void);
@@ -62,22 +63,26 @@ char check_specific_player_in_back_buf(Point from);
 
 /*
 * ********* ********* ********* *
-*          전역변수 선언          *
+*          ��           *
 * ********* ********* ********* *
 */
 int px[PLAYER_MAX], py[PLAYER_MAX], period[PLAYER_MAX];
 
 
+
 CameraCheckingState cameraCheckingState = Camera_is_not_checking;
 
 void sample_init_1(void) {
-	map_init(14, 40);
+	map_init(14, 30);
 	int x, y;
+
 	for (int i = 0; i < n_player; i++) {
 
 		do {
+
 			x = randint(2, N_ROW - 3);
 			y = randint(38, N_COL - 2);
+
 		} while (!placable(x, y));
 		px[i] = x;
 		py[i] = y;
@@ -114,11 +119,12 @@ void move_manual_1(key_t key) {
 		return;
 	}
 
-	move_tail_1(0, nx, ny);
+	move_tail_2(0, nx, ny);
 }
 
 
 void move_random_1(int player, int dir) {
+
 	int p = player;
 	int nx, ny;
 
@@ -152,10 +158,81 @@ void move_random_1(int player, int dir) {
 // back_buf[][]
 void move_tail_1(int player, int nx, int ny) {
 	int p = player;
+
 	back_buf[nx][ny] = back_buf[px[p]][py[p]];
 	back_buf[px[p]][py[p]] = ' ';
 	px[p] = nx;
 	py[p] = ny;
+}
+
+
+void young() {
+	int a;
+	gotoxy(N_ROW, 0);
+	printf("%d", tick);
+	
+	if (tick % 1000 == 0) {
+		gotoxy(N_ROW+1, 0);
+		printf("무");
+	}
+
+	if (tick % 1500 == 0) {
+		gotoxy(N_ROW + 1, 2);
+		printf("궁");
+	}
+
+	if (tick % 2000 == 0) {
+		gotoxy(N_ROW + 1, 4);
+		printf("화");
+	}
+
+	if (tick % 2500 == 0) {
+		gotoxy(N_ROW + 1, 6);
+		printf("꽃");
+	}
+
+	if (tick % 3000 == 0) {
+		gotoxy(N_ROW + 1, 8);
+		printf("이");
+	}
+
+	if (tick % 3200 == 0) {
+		gotoxy(N_ROW + 1, 10);
+		printf("피");
+	}
+
+	if (tick % 3400 == 0) {
+		gotoxy(N_ROW + 1, 12);
+		printf("었");
+	}
+
+	if (tick % 3600 == 0) {
+		gotoxy(N_ROW + 1, 14);
+		printf("습");
+	}
+
+	if (tick % 3800 == 0) {
+		gotoxy(N_ROW + 1, 16);
+		printf("니");
+	}
+
+	if (tick % 4000 == 0) {
+		gotoxy(N_ROW + 1, 18);
+		printf("다");
+	}
+
+	if (tick % 7000 == 0) {
+		gotoxy(N_ROW + 1, 0);
+		for (int i = 0; i < 20 + 2; i++) {
+			printf(" ");
+		}
+		tick = 0;
+
+	}
+
+
+}
+
 
 	if ((nx == 4 && ny == 1) || (nx == 5 && ny == 2) || (nx == 6 && ny == 2) ||
 		(nx == 7 && ny == 2) || (nx == 8 && ny == 2) || (nx == 9 && ny == 1)) {
@@ -165,7 +242,20 @@ void move_tail_1(int player, int nx, int ny) {
 
 
 
+
+
+
+
+void pass1() {
+	for (int i = 0; i < n_player; i++) {
+		if ((px[i] == 4 && py[i] == 1) || (px[i] == 5 && py[i] == 2) || (px[i] == 6 && py[i] == 2) ||
+			(px[i] == 7 && py[i] == 2) || (px[i] == 8 && py[i] == 2) || (px[i] == 9 && py[i] == 1)) {
+			back_buf[px[i]][py[i]] = ' ';
+			pass_player[i] = true;
+		}
+	}
 }
+
 
 
 void mugunghwa(void) {
@@ -189,11 +279,11 @@ void mugunghwa(void) {
 
 		//print_mugung();
 		if (cameraCheckingState == Camera_is_checking) {
-			/// 무궁화 꽃이 피었습니 -> "다"를 외친 후 cameraChecingState 를 위와 같은 경우로 만들었을 때
-			/// TODO: - 3초동안 카메라 돌린 후 움직이는 player체크하기 
+			/// 臾닿 苑 쇱듬 -> ""瑜 몄  cameraChecingState 瑜  媛 寃쎌곕 留ㅼ 
+			/// TODO: - 3珥 移대 由  吏대 player泥댄ы湲 
 		}
 		else {
-			/// TODO: - "무궁화 꽃이 피었습니" 일 때 플레이어들 랜덤 이동.
+			/// TODO: - "臾닿 苑 쇱듬"   �댁대  대.
 			update_players_moving_position();
 		}
 		update_console_info();
@@ -257,11 +347,11 @@ void turn_of_camera() {
 
 	while ((time(NULL) < endTime)) {
 		Sleep(Console_print_frame_rate_unit);
-		/// 화면에 보여지는 게임 맵 안 back_buf 정보를 temp_map으로 copy
+		/// 硫댁 蹂댁ъ 寃 留  back_buf �蹂대� temp_map쇰 copy
 		char before_players_moving_info_buf[ROW_MAX][COL_MAX];
 		memcpy(before_players_moving_info_buf, back_buf, sizeof(back_buf));
 
-		/// 플레이어들 특정 확률로 움직여라..
+		/// �댁대 뱀 瑜濡 吏щ..
 		update_players_moving_position();
 		
 		for (int i = 0; i < ROW_MAX; i++) {
@@ -285,16 +375,37 @@ void turn_of_camera() {
 				}
 
 				if (isPlayerMoved && player != '-1') {
-					/// 움직인 플레이어 저장.
+					/// 吏 �댁 �.
 					moved_players_when_camera_working_state[moved_players_index++] = player;
+				}
+
+			}
+			else
+				continue;
+		}
+
+		int a[PLAYER_MAX];
+		for (int i = 0; i < n_player; i++) {
+			a[i] = -1; // 모든 요소를 -1로 초기화
+		}
+
+		for (int i = 0; i < n_player; i++) {
+			if (pass_player[i] == true) {
+				a[i] = i;
+				gotoxy(N_ROW + 3, 0);
+				printf("통과: ");
+				for (int j = 0; j < n_player; j++) {
+					if (a[j] != -1) {
+						printf("%d번 ", a[j]);
+					}
 				}
 			}
 		}
 		memcpy(back_buf, before_players_moving_info_buf, sizeof(back_buf));
 	}
-	/// TODO: - moved_players_when_camera_working_state에 저장된 특정 플레이어들을 
-	///				back_buf로부터 제거하고 다이얼로그로 잠깐보여주는 코드 작성해야합니다.
-	///				어디까지? 0..<moved_players_index 까지
+	/// TODO: - moved_players_when_camera_working_state �λ 뱀 �댁대ㅼ 
+	///				back_buf濡遺 �嫄고怨 ㅼ댁쇰洹몃 源蹂댁ъ＜ 肄 깊댁쇳⑸.
+	///				대源吏? 0..<moved_players_index 源吏
 	 
 	
 	
@@ -313,6 +424,7 @@ char check_specific_player_in_back_buf(Point from) {
 }
 
 
+
 void update_canera_positoin_from_back_buf() {
 	CameraIcon icon;
 
@@ -327,5 +439,6 @@ void update_canera_positoin_from_back_buf() {
 
 	for (int y = Camera_start_y; y < Camera_end_y + 1; y++) {
 		back_buf[y][Camera_start_x] = icon;
+
 	}
 }

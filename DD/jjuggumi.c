@@ -9,6 +9,9 @@
 
 int jjuggumi_init(void);
 
+
+// low 이상 high 이하 난수를 발생시키는 함수
+
 int randint(int low, int high) {
 	int rnum = rand() % (high - low + 1) + low;
 	return rnum;
@@ -71,6 +74,9 @@ void intro(void) {
 	printf("'--------------------------------------------------------------'\n");
 	Sleep(1500);
 }
+
+
+//void intro(void)
 
 
 int main(void) {
