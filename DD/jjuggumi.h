@@ -29,13 +29,6 @@ typedef enum Color_type {
 	white		//15
 } COLOR;
 
-typedef struct {
-	int x;
-	int y;
-} Point;
-
-
-
 void text_color(int color);
 void print_color_text(char const* const text, int color);
 void intro_color(char const* const text, int color);

@@ -2,14 +2,6 @@
 #include "canvas.h"
 #include "keyin.h"
 #include <stdio.h>
-#include <time.h>
-
-
-/*
-* ********* ********* ********* *
-* ìƒìˆ˜, define, enum etc.. ì„ ì–¸ *
-* ********* ********* ********* *
-*/
 
 #define DIR_UP		0
 #define DIR_DOWN	1
@@ -17,72 +9,27 @@
 #define DIR_RIGHT	3
 
 
-#define MuGungWha_next_keyword_present_seconds 3
-/// è‚„Â˜Â†Â”ï§¡ìŒÂ—Â è‡¾ëª„ÂÂÂ—ëŒÂÂ„ ç•°Âœï¿½Î½Â•Â˜ÂŠÂ” sleep Â‹â‘¥ÂœÂ„ (ï§Â”Âëª„ÂŠã…»ÂˆÂ“Âœ sleep Â‹Âœåª›Â„)
-#define Console_print_frame_rate_unit 10
+bool pass_player[PLAYER_MAX];
 
 
-typedef enum Camera_position_info_from_console {
-	Camera_start_x = 1,
-	Camera_start_y = 5,
-	Camera_end_y = 8
-}CameraPosition;
-
-
-typedef enum Camera_icon_from_console {
-	Working_camera_icon = '@',
-	Not_working_camera_icon = '#'
-}CameraIcon;
-
-
-typedef enum Camera_checking_state_when_game_paused {
-	Camera_is_not_checking = 0,
-	Camera_is_checking 
-}CameraCheckingState;
-
-
-
-
-/*
-* ********* ********* ********* *
-*          Â•â‘¥ÂˆÂ˜ï§Â… Â„Â–          *
-* ********* ********* ********* *
-*/
 void sample_init_1(void);
 void move_manual_1(key_t key);
 void move_random_1(int i, int dir);
-void move_tail_1(int i, int nx, int ny);
-void print_mugung(void);
+void move_tail_2(int i, int nx, int ny);
+void young();
 
-void update_canera_positoin_from_back_buf();
-void turn_of_camera();
-void update_players_moving_position();
-void update_console_info();
-char check_specific_player_in_back_buf(Point from);
-
-
-/*
-* ********* ********* ********* *
-*          ï¿½Â„Â—ï¿½Â€ÂˆÂ˜ Â„Â–          *
-* ********* ********* ********* *
-*/
-int px[PLAYER_MAX], py[PLAYER_MAX], period[PLAYER_MAX];
-
-
-
-CameraCheckingState cameraCheckingState = Camera_is_not_checking;
+int px[PLAYER_MAX], py[PLAYER_MAX], period[PLAYER_MAX];  // °¢ ÇÃ·¹ÀÌ¾î À§Ä¡, ÀÌµ¿ ÁÖ±â
 
 void sample_init_1(void) {
 	map_init(14, 30);
 	int x, y;
 
 	for (int i = 0; i < n_player; i++) {
-
+		// °°Àº ÀÚ¸®°¡ ³ª¿À¸é ´Ù½Ã »ı¼º
 		do {
-
-			x = randint(2, N_ROW - 3);
-			y = randint(38, N_COL - 2);
-
+			//ÇÃ·¹¸®¾îµéÀ» ¿À¸¥ÂÊ °¡ÀåÀÚ¸®¿¡ ·£´ıÀ¸·Î Á¤·ÄÇØÁÜ
+			x = randint(2, N_ROW-3);
+			y = randint(28, N_COL-2);
 		} while (!placable(x, y));
 		px[i] = x;
 		py[i] = y;
@@ -91,18 +38,30 @@ void sample_init_1(void) {
 		back_buf[px[i]][py[i]] = '0' + i;  // (0 .. n_player-1)
 	}
 
-	update_canera_positoin_from_back_buf();
+	//ÇÃ·¹ÀÌ¾î ÀüºÎ´Ù Åë°úÇÏÁö ¸øÇÑ »óÅÂ
+	for (int i = 0; i < n_player; i++) {
+		pass_player[i] = false;
+	}
+
+
+
+	//°úÁ¦ 2¿¡¼­ ÀÌ°Íµµ º¯¼ö·Î ¹Ş°Ô ¹Ù²ã¾ßÇÔ(¿µÈñ)
+	back_buf[5][1] = '#';
+	back_buf[6][1] = '#';
+	back_buf[7][1] = '#';
+	back_buf[8][1] = '#';
+
+
 
 	tick = 0;
 }
 
-
 void move_manual_1(key_t key) {
-
+	// °¢ ¹æÇâÀ¸·Î ¿òÁ÷ÀÏ ¶§ x, y°ª delta
 	static int dx[4] = { -1, 1, 0, 0 };
 	static int dy[4] = { 0, 0, -1, 1 };
 
-	int dir;
+	int dir;  // ¿òÁ÷ÀÏ ¹æÇâ(0~3)
 	switch (key) {
 	case K_UP: dir = DIR_UP; break;
 	case K_DOWN: dir = DIR_DOWN; break;
@@ -111,7 +70,7 @@ void move_manual_1(key_t key) {
 	default: return;
 	}
 
-
+	// ¿òÁ÷¿©¼­ ³õÀÏ ÀÚ¸®
 	int nx, ny;
 	nx = px[0] + dx[dir];
 	ny = py[0] + dy[dir];
@@ -122,43 +81,44 @@ void move_manual_1(key_t key) {
 	move_tail_2(0, nx, ny);
 }
 
-
+// 0 <= dir < 4°¡ ¾Æ´Ï¸é ·£´ı
 void move_random_1(int player, int dir) {
+	int p = player;  // ÀÌ¸§ÀÌ ±æ¾î¼­...
+	int nx, ny;  // ¿òÁ÷¿©¼­ ´ÙÀ½¿¡ ³õÀÏ ÀÚ¸®
 
-	int p = player;
-	int nx, ny;
 
-	int r = randint(1, 100);
-	gotoxy(N_ROW + 3, 0);
-	printf("%d", r);
-	if (r <= 70) { // Move left (70% probability)
-		nx = px[p];
-		ny = py[p] - 1;
-	}
-	else if (r <= 80) { // Move up (10% probability)
-		nx = px[p] - 1;
-		ny = py[p];
-	}
-	else if (r <= 90) { // Move down (10% probability)
-		nx = px[p] + 1;
-		ny = py[p];
-	}
-	else { // Stay in place (10% probability)
-		nx = px[p];
-		ny = py[p];
-	}
+	// ¿òÁ÷ÀÏ °ø°£ÀÌ ¾ø´Â °æ¿ì´Â ¾ø´Ù°í °¡Á¤(¹«ÇÑ ·çÇÁ¿¡ ºüÁü)	
+	int x[4] = {0,-1,1,0};
+	int y[4] = {-1.0,0,0};
+	int r=0;
+	do {
+		r = randint(0, 101);
+		/*gotoxy(N_ROW + 3, 0);
+		printf("%d", r);*/
+		if (r <= 70) {
+			nx = px[p] + x[0];
+			ny = py[p] + y[0];
+		}
+		else if (r<= 80) {
+			nx = px[p] + x[1];
+			ny = py[p] + y[1];
+		}
+		else if (r <= 90) {
+			nx = px[p] + x[2];
+			ny = py[p] + y[2];
+		}
+		else{
+			nx = px[p] + x[3];
+			ny = py[p] + y[3];
+		}
+	} while (!placable(nx, ny));
 
-	// Check if the new position is placable
-	if (placable(nx, ny)) {
-		move_tail_1(p, nx, ny);
-	}
+	move_tail_2(p, nx, ny);
+
 }
 
-
-// back_buf[][]
-void move_tail_1(int player, int nx, int ny) {
-	int p = player;
-
+void move_tail_2(int player, int nx, int ny) {
+	int p = player;  // ÀÌ¸§ÀÌ ±æ¾î¼­...
 	back_buf[nx][ny] = back_buf[px[p]][py[p]];
 	back_buf[px[p]][py[p]] = ' ';
 	px[p] = nx;
@@ -173,52 +133,52 @@ void young() {
 	
 	if (tick % 1000 == 0) {
 		gotoxy(N_ROW+1, 0);
-		printf("ë¬´");
+		printf("¹«");
 	}
 
 	if (tick % 1500 == 0) {
 		gotoxy(N_ROW + 1, 2);
-		printf("ê¶");
+		printf("±Ã");
 	}
 
 	if (tick % 2000 == 0) {
 		gotoxy(N_ROW + 1, 4);
-		printf("í™”");
+		printf("È­");
 	}
 
 	if (tick % 2500 == 0) {
 		gotoxy(N_ROW + 1, 6);
-		printf("ê½ƒ");
+		printf("²É");
 	}
 
 	if (tick % 3000 == 0) {
 		gotoxy(N_ROW + 1, 8);
-		printf("ì´");
+		printf("ÀÌ");
 	}
 
 	if (tick % 3200 == 0) {
 		gotoxy(N_ROW + 1, 10);
-		printf("í”¼");
+		printf("ÇÇ");
 	}
 
 	if (tick % 3400 == 0) {
 		gotoxy(N_ROW + 1, 12);
-		printf("ì—ˆ");
+		printf("¾ú");
 	}
 
 	if (tick % 3600 == 0) {
 		gotoxy(N_ROW + 1, 14);
-		printf("ìŠµ");
+		printf("½À");
 	}
 
 	if (tick % 3800 == 0) {
 		gotoxy(N_ROW + 1, 16);
-		printf("ë‹ˆ");
+		printf("´Ï");
 	}
 
 	if (tick % 4000 == 0) {
 		gotoxy(N_ROW + 1, 18);
-		printf("ë‹¤");
+		printf("´Ù");
 	}
 
 	if (tick % 7000 == 0) {
@@ -234,11 +194,8 @@ void young() {
 }
 
 
-	if ((nx == 4 && ny == 1) || (nx == 5 && ny == 2) || (nx == 6 && ny == 2) ||
-		(nx == 7 && ny == 2) || (nx == 8 && ny == 2) || (nx == 9 && ny == 1)) {
-		gotoxy(N_ROW + 2, 0);
-		printf("player%d clear", player);
-	}
+
+
 
 
 
@@ -257,19 +214,16 @@ void pass1() {
 }
 
 
-
 void mugunghwa(void) {
+
 	sample_init_1();
 
 	system("cls");
 	display();
 	Sleep(1000);
-	dialog("READY");
-	Sleep(1000);
-
 	while (1) {
+		// player 0¸¸ ¼ÕÀ¸·Î ¿òÁ÷ÀÓ(4¹æÇâ)
 		key_t key = get_key();
-
 		if (key == K_QUIT) {
 			break;
 		}
@@ -277,108 +231,9 @@ void mugunghwa(void) {
 			move_manual_1(key);
 		}
 
-		//print_mugung();
-		if (cameraCheckingState == Camera_is_checking) {
-			/// è‡¾ë‹¿ÂÂ™Â” è‹‘ÂƒÂ Â”ì‡±Â—ÂˆÂŠë“¬Â‹Âˆ -> "Â‹"ç‘œ Â™ëª„Âœ Â›Â„ cameraChecingState ç‘œ ÂœÂ„Â™Â€ åª›Â™ÂÂ€ å¯ƒìŒÂšê³•Âœ ï§ÂŒÂ“ã…¼Â—ÂˆÂÂ„ Â•ÂŒ
-			/// TODO: - 3ç¥ÂˆÂ™Â•Âˆ ç§»ëŒ€Â”Â ÂŒç”± Â›Â„ Â›Â€ï§ÂÂëŒ€ÂŠÂ” playerï§£ëŒ„ÂÑ‹Â•Â˜æ¹² 
-		}
-		else {
-			/// TODO: - "è‡¾ë‹¿ÂÂ™Â” è‹‘ÂƒÂ Â”ì‡±Â—ÂˆÂŠë“¬Â‹Âˆ" Â Â•ÂŒ Â”ÂŒï¿½ÂˆÂëŒÂ–ëŒ€Â“ ÂÂœÂ ÂëŒ€Â™.
-			update_players_moving_position();
-		}
-		update_console_info();
-	}
-}
-
-
-void print_mugung(void) {
-	gotoxy(N_ROW + 1, 0);
-	printf("a "); Sleep(350);
-	printf("b "); Sleep(400);
-	printf("c "); Sleep(500);
-	printf("d "); Sleep(550);
-	printf("e "); Sleep(600);
-	printf("f "); Sleep(450);
-	printf("g "); Sleep(250);
-	printf("h "); Sleep(200);
-	printf("i "); Sleep(100);
-	printf("j"); Sleep(3000);
-	gotoxy(N_ROW + 1, 0);
-	for (int i = 1; i < 30; i++) {
-		printf(" ");
-	}
-	Sleep(1000);
-
-}
-
-
-void update_console_info() {
-	display();
-	Sleep(Console_print_frame_rate_unit);
-	tick += Console_print_frame_rate_unit;
-	gotoxy(N_ROW + 1, 0);
-	printf("%d", tick);
-
-}
-
-
-void update_players_moving_position() {
-	for (int i = 1; i < n_player; i++) {
-		if (tick % period[i] == 0) {
-			move_random_1(i, -1);
-		}
-	}
-}
-
-
-void turn_of_camera() {
-	Point directions[4] = { {-1, 0}, {1, 0}, {0, 1}, {0, -1} };
-
-	cameraCheckingState = Camera_is_checking;
-	time_t startTime = time(NULL);
-	time_t endTime = startTime + MuGungWha_next_keyword_present_seconds;
-
-	
-	char moved_players_when_camera_working_state[100] = { ' ' };
-	int moved_players_index = 0;
-
-	update_canera_positoin_from_back_buf();
-	update_console_info();
-
-	while ((time(NULL) < endTime)) {
-		Sleep(Console_print_frame_rate_unit);
-		/// Â™Â”ï§ëŒÂ—Â è¹‚ëŒÂ—ÑŠÂ€ÂŠÂ” å¯ƒÂŒÂÂ„ ï§ Â•Âˆ back_buf ï¿½Â•è¹‚ëŒ€ï¿½ temp_mapÂœì‡°Âœ copy
-		char before_players_moving_info_buf[ROW_MAX][COL_MAX];
-		memcpy(before_players_moving_info_buf, back_buf, sizeof(back_buf));
-
-		/// Â”ÂŒï¿½ÂˆÂëŒÂ–ëŒ€Â“ ÂŠë±€Â• Â™Â•ç‘œæ¿¡Âœ Â›Â€ï§ÂÂ—Ñ‰Â..
-		update_players_moving_position();
-		
-		for (int i = 0; i < ROW_MAX; i++) {
-			for (int j = 0; j < COL_MAX; j++) {
-				Point point = { i, j };
-				bool isPlayerMoved = false;
-				char player = check_specific_player_in_back_buf(point);
-
-				if (player != '-1' && (before_players_moving_info_buf[i][j] != back_buf[i][j])) {
-					
-					for (int directionIndex = 0; directionIndex < 4; directionIndex++) {
-						int dx = i + directions[directionIndex].x;
-						int dy = j + directions[directionIndex].y;
-						if (dx != 0 && dy != 0 && dx < ROW_MAX && dy < COL_MAX) {
-							if (before_players_moving_info_buf[dx][dy] == player) {
-								isPlayerMoved = true;
-								break;
-							}
-						}
-					}
-				}
-
-				if (isPlayerMoved && player != '-1') {
-					/// Â›Â€ï§ÂÂ Â”ÂŒï¿½ÂˆÂëŒÂ– ï¿½Â€Â.
-					moved_players_when_camera_working_state[moved_players_index++] = player;
-				}
-
+		for (int i = 1; i < n_player; i++) {
+			if (tick % period[i] == 0 && pass_player[i] == false) {
+				move_random_1(i, -1);
 			}
 			else
 				continue;
@@ -386,59 +241,32 @@ void turn_of_camera() {
 
 		int a[PLAYER_MAX];
 		for (int i = 0; i < n_player; i++) {
-			a[i] = -1; // ëª¨ë“  ìš”ì†Œë¥¼ -1ë¡œ ì´ˆê¸°í™”
+			a[i] = -1; // ¸ğµç ¿ä¼Ò¸¦ -1·Î ÃÊ±âÈ­
 		}
 
 		for (int i = 0; i < n_player; i++) {
 			if (pass_player[i] == true) {
 				a[i] = i;
 				gotoxy(N_ROW + 3, 0);
-				printf("í†µê³¼: ");
+				printf("Åë°ú: ");
 				for (int j = 0; j < n_player; j++) {
 					if (a[j] != -1) {
-						printf("%dë²ˆ ", a[j]);
+						printf("%d¹ø ", a[j]);
 					}
 				}
 			}
 		}
-		memcpy(back_buf, before_players_moving_info_buf, sizeof(back_buf));
-	}
-	/// TODO: - moved_players_when_camera_working_stateÂ—Â ï¿½Â€ÂÎ»ÂÂœ ÂŠë±€Â• Â”ÂŒï¿½ÂˆÂëŒÂ–ëŒ€Â“ã…¼ÂÂ„ 
-	///				back_bufæ¿¡ÂœéºÂ€Â„ ï¿½Âœå«„ê³ Â•Â˜æ€¨ Â‹ã…¼ÂëŒÂ–ì‡°Âœæ´¹ëªƒÂœ ÂæºÂè¹‚ëŒÂ—ÑŠï¼œÂŠÂ” è‚„Â”Â“Âœ ÂÂ‘Â„ê¹ŠÂ•ëŒÂ•ì‡³Â•â‘¸Â‹ÂˆÂ‹.
-	///				Â–ëŒ€Â”Â”æºÂŒï§Â€? 0..<moved_players_index æºÂŒï§Â€
-	 
-	
-	
-	cameraCheckingState = Camera_is_not_checking;
-}
 
-char check_specific_player_in_back_buf(Point from) {
-	char player = '-1';
-	for (int playerIndex = 0; playerIndex < n_player; playerIndex++) {
-		if (back_buf[from.x][from.y] == '0' + playerIndex) {
-			player = '0' + playerIndex;
-			return player;
-		}
-	}
-	return player;
-}
+		//// tick °ªÀÌ 500ÀÇ ¹è¼öÀÏ ¶§¸¸ ready ¸Ş½ÃÁö Ãâ·Â
+		//if (tick % 1000 == 0 && tick != 0) {
+		//	dialog("player 1 dead");
+		//	Sleep(1000);
+		//}
 
-
-
-void update_canera_positoin_from_back_buf() {
-	CameraIcon icon;
-
-	switch (cameraCheckingState) {
-	case Camera_is_checking:
-		icon = Working_camera_icon;
-		break;
-	case Camera_is_not_checking:
-		icon = Not_working_camera_icon;
-		break;
-	}
-
-	for (int y = Camera_start_y; y < Camera_end_y + 1; y++) {
-		back_buf[y][Camera_start_x] = icon;
-
+		pass1();
+		display();
+		Sleep(10);
+		tick += 10;
+		young();
 	}
 }
