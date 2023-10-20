@@ -5,11 +5,6 @@
 #include <time.h>
 
 
-/*
-* ********* ********* ********* *
-* 상수, define, enum etc.. 선언 *
-* ********* ********* ********* *
-*/
 
 #define DIR_UP		0
 #define DIR_DOWN	1
@@ -18,17 +13,17 @@
 
 
 #define MuGungWha_next_keyword_present_seconds 3
-/// 肄李쎌 臾몄댁 異�ν sleep ⑥ (硫몄ㅻ sleep 媛)
+// 콘솔창에 문자열을 출력하는 sleep 
 #define Console_print_frame_rate_unit 10
 
-
+// 맵 안에서 카메라가 표시될 시작과 끝 위치
 typedef enum Camera_position_info_from_console {
 	Camera_start_x = 1,
 	Camera_start_y = 5,
 	Camera_end_y = 8
 }CameraPosition;
 
-
+//  화면에 출력될 카메라 text icon
 typedef enum Camera_icon_from_console {
 	Working_camera_icon = '@',
 	Not_working_camera_icon = '#'
@@ -41,13 +36,6 @@ typedef enum Camera_checking_state_when_game_paused {
 }CameraCheckingState;
 
 
-
-
-/*
-* ********* ********* ********* *
-*          ⑥紐           *
-* ********* ********* ********* *
-*/
 void sample_init_1(void);
 void move_manual_1(key_t key);
 void move_random_1(int i, int dir);
@@ -61,14 +49,7 @@ void update_console_info();
 char check_specific_player_in_back_buf(Point from);
 
 
-/*
-* ********* ********* ********* *
-*          ��           *
-* ********* ********* ********* *
-*/
 int px[PLAYER_MAX], py[PLAYER_MAX], period[PLAYER_MAX];
-
-
 
 CameraCheckingState cameraCheckingState = Camera_is_not_checking;
 
@@ -241,11 +222,6 @@ void young() {
 	}
 
 
-
-
-
-
-
 void pass1() {
 	for (int i = 0; i < n_player; i++) {
 		if ((px[i] == 4 && py[i] == 1) || (px[i] == 5 && py[i] == 2) || (px[i] == 6 && py[i] == 2) ||
@@ -255,7 +231,6 @@ void pass1() {
 		}
 	}
 }
-
 
 
 void mugunghwa(void) {
@@ -279,18 +254,19 @@ void mugunghwa(void) {
 
 		//print_mugung();
 		if (cameraCheckingState == Camera_is_checking) {
-			/// 臾닿 苑 쇱듬 -> ""瑜 몄  cameraChecingState 瑜  媛 寃쎌곕 留ㅼ 
-			/// TODO: - 3珥 移대 由  吏대 player泥댄ы湲 
+			//무궁화 꽃이 피었습니 -> "다"를 외친 후 cameraChecingState 를 위와 같은 경우로 만들었을 때
+		// TODO: - 3초동안 카메라 돌린 후 움직이는 player체크하기 
+
 		}
 		else {
-			/// TODO: - "臾닿 苑 쇱듬"   �댁대  대.
+			/// TODO: - "무궁화 꽃이 피었습니" 일 때 플레이어들 랜덤 이동.
 			update_players_moving_position();
 		}
 		update_console_info();
 	}
 }
 
-
+/*
 void print_mugung(void) {
 	gotoxy(N_ROW + 1, 0);
 	printf("a "); Sleep(350);
@@ -309,9 +285,9 @@ void print_mugung(void) {
 	}
 	Sleep(1000);
 
-}
+}*/
 
-
+//업데이트된 player + 사용자 움직임이 저장된 back_buf 정보를 바탕으로 콘솔창에 그린 후 커서를 원 위치로 변경
 void update_console_info() {
 	display();
 	Sleep(Console_print_frame_rate_unit);
@@ -321,7 +297,7 @@ void update_console_info() {
 
 }
 
-
+// 랜덤으로 사용자를 이동 후 back_buf에 저장합니다.
 void update_players_moving_position() {
 	for (int i = 1; i < n_player; i++) {
 		if (tick % period[i] == 0) {
@@ -347,11 +323,11 @@ void turn_of_camera() {
 
 	while ((time(NULL) < endTime)) {
 		Sleep(Console_print_frame_rate_unit);
-		/// 硫댁 蹂댁ъ 寃 留  back_buf �蹂대� temp_map쇰 copy
+		// 화면에 보여지는 게임 맵 안 back_buf 정보를 temp_map으로 copy
 		char before_players_moving_info_buf[ROW_MAX][COL_MAX];
 		memcpy(before_players_moving_info_buf, back_buf, sizeof(back_buf));
 
-		/// �댁대 뱀 瑜濡 吏щ..
+		// 플레이어들 특정 확률로 움직여라.
 		update_players_moving_position();
 		
 		for (int i = 0; i < ROW_MAX; i++) {
@@ -375,7 +351,7 @@ void turn_of_camera() {
 				}
 
 				if (isPlayerMoved && player != '-1') {
-					/// 吏 �댁 �.
+					// 움직인 플레이어 저장.
 					moved_players_when_camera_working_state[moved_players_index++] = player;
 				}
 
@@ -403,12 +379,10 @@ void turn_of_camera() {
 		}
 		memcpy(back_buf, before_players_moving_info_buf, sizeof(back_buf));
 	}
-	/// TODO: - moved_players_when_camera_working_state �λ 뱀 �댁대ㅼ 
-	///				back_buf濡遺 �嫄고怨 ㅼ댁쇰洹몃 源蹂댁ъ＜ 肄 깊댁쇳⑸.
-	///				대源吏? 0..<moved_players_index 源吏
-	 
-	
-	
+
+	// TODO: - moved_players_when_camera_working_state에 저장된 특정 플레이어들을 
+    //            back_buf로부터 제거하고 다이얼로그로 잠깐보여주는 코드 작성해야합니다.
+    //            어디까지? 0..<moved_players_index 까지
 	cameraCheckingState = Camera_is_not_checking;
 }
 
