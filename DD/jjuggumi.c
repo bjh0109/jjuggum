@@ -77,7 +77,7 @@ int main(void) {
 	
 	jjuggumi_init();
 
-	intro();
+	//intro();
 	//sample();
 	mugunghwa();
 	//nightgame();

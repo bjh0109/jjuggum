@@ -92,11 +92,8 @@ void dialog(char message[]) {
     int box_start_col = center_col - box_width / 2;
     int box_end_col = center_col + box_width / 2;
 
-    for (int i = 0; i < ROW_MAX; i++) {
-        for (int j = 0; j < COL_MAX; j++) {
-            temp_buf[i][j] = back_buf[i][j];
-        }
-    }
+
+   memcpy(temp_buf, back_buf, sizeof(back_buf));
 
     // 대화 상자를 한 번만 표시
     for (int i = DIALOG_DURATION_SEC; i >= 0; --i) {
