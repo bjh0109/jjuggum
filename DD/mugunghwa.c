@@ -5,11 +5,6 @@
 #include <time.h>
 
 
-/*
-* ********* ********* ********* *
-* 상수, define, enum etc.. 선언 *
-* ********* ********* ********* *
-*/
 
 #define DIR_UP      0
 #define DIR_DOWN   1
@@ -20,14 +15,14 @@
 
 #define Console_print_frame_rate_unit 10
 
-
+// 맵 안에서 카메라가 표시될 시작과 끝 위치
 typedef enum Camera_position_info_from_console {
     Camera_start_x = 1,
     Camera_start_y = 5,
     Camera_end_y = 8
 }CameraPosition;
 
-
+//  화면에 출력될 카메라 text icon
 typedef enum Camera_icon_from_console {
     Working_camera_icon = '@',
     Not_working_camera_icon = '#'
@@ -41,12 +36,6 @@ typedef enum Camera_checking_state_when_game_paused {
 
 
 
-
-/*
-* ********* ********* ********* *
-*          함수명 선언          *
-* ********* ********* ********* *
-*/
 void sample_init_1(void);
 void move_manual_1(key_t key);
 void move_random_1(int i, int dir);
@@ -60,11 +49,6 @@ void update_console_info();
 char check_specific_player_in_back_buf(Point from);
 
 
-/*
-* ********* ********* ********* *
-*          전역변수 선언          *
-* ********* ********* ********* *
-*/
 int px[PLAYER_MAX], py[PLAYER_MAX], period[PLAYER_MAX];
 
 
@@ -168,6 +152,7 @@ void move_tail_1(int player, int nx, int ny) {
 }
 
 
+
 void mugunghwa(void) {
     sample_init_1();
 
@@ -223,9 +208,7 @@ void print_mugung(void) {
 
 
 
-
-
-
+//업데이트된 player + 사용자 움직임이 저장된 back_buf 정보를 바탕으로 콘솔창에 그린 후 커서를 원 위치로 변경
 void update_console_info() {
     display();
     Sleep(Console_print_frame_rate_unit);
@@ -235,7 +218,7 @@ void update_console_info() {
 
 }
 
-
+// 랜덤으로 사용자를 이동 후 back_buf에 저장합니다.
 void update_players_moving_position() {
     for (int i = 1; i < n_player; i++) {
         if (tick % period[i] == 0) {
@@ -246,6 +229,7 @@ void update_players_moving_position() {
 
 
 void turn_of_camera() {
+
     Point directions[4] = { {-1, 0}, {1, 0}, {0, 1}, {0, -1} };
 
     cameraCheckingState = Camera_is_checking;
