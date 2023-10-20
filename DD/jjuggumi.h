@@ -1,4 +1,4 @@
-#ifndef _JJUGGUMI_H_
+﻿#ifndef _JJUGGUMI_H_
 #define _JJUGGUMI_H_
 
 #include <Windows.h>

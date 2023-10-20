@@ -1,4 +1,4 @@
-#include "jjuggumi.h"
+﻿#include "jjuggumi.h"
 #include "canvas.h"
 #include "keyin.h"
 #include <stdio.h>
@@ -203,16 +203,16 @@ void mugunghwa(void) {
 
 void print_mugung(void) {
 	gotoxy(N_ROW + 1, 0);
-	printf("a "); Sleep(350);
-	printf("b "); Sleep(400);
-	printf("c "); Sleep(500);
-	printf("d "); Sleep(550);
-	printf("e "); Sleep(600);
-	printf("f "); Sleep(450);
-	printf("g "); Sleep(250);
-	printf("h "); Sleep(200);
-	printf("i "); Sleep(100);
-	printf("j"); Sleep(3000);
+	printf("무 "); Sleep(350);
+	printf("궁 "); Sleep(400);
+	printf("화 "); Sleep(500);
+	printf("꽃 "); Sleep(550);
+	printf("이 "); Sleep(600);
+	printf("피 "); Sleep(450);
+	printf("었 "); Sleep(250);
+	printf("습 "); Sleep(200);
+	printf("니 "); Sleep(100);
+	printf("다"); Sleep(3000);
 	gotoxy(N_ROW + 1, 0);
 	for (int i = 1; i < 30; i++) {
 		printf(" ");
@@ -261,7 +261,7 @@ void turn_of_camera() {
 		char before_players_moving_info_buf[ROW_MAX][COL_MAX];
 		memcpy(before_players_moving_info_buf, back_buf, sizeof(back_buf));
 
-		/// 플레이어들 특정 확률로 움직여라..
+		/// 플레이어들 특정 확률로 움직여라.
 		update_players_moving_position();
 		
 		for (int i = 0; i < ROW_MAX; i++) {
