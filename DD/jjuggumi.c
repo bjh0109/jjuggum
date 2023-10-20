@@ -1,4 +1,4 @@
-// 2023-2 고급프로그래밍 과제: 쭈꾸미 게임
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -20,7 +20,7 @@ int randint(int low, int high) {
 int jjuggumi_init(void) {
 	srand((unsigned int)time(NULL));
 
-	printf("플레이어 수: ");
+	printf("Please enter the number of palyers: ");
 	scanf_s("%d", &n_player);
 
 	n_alive = n_player;
@@ -83,7 +83,7 @@ int main(void) {
 	
 	jjuggumi_init();
 
-	intro();
+	//intro();
 	//sample();
 	mugunghwa();
 	//nightgame();
