@@ -9,7 +9,7 @@
 #define DIR_RIGHT	3
 
 
-//bool pass_player[PLAYER_MAX];
+
 bool dialog_player[PLAYER_MAX];
 bool map[ROW_MAX][100];
 
@@ -189,8 +189,6 @@ void move_tail_2(int player1, int nx, int ny) {
 
 void young() {
 	int a;
-	gotoxy(N_ROW, 0);
-	printf("%d", tick);
 
 	if (b == 0) {
 		back_buf[5][1] = '#';
