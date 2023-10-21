@@ -1,22 +1,28 @@
-#ifndef _CIO_H_
+ï»¿#ifndef _CIO_H_
 #define _CIO_H_
 
 #include <stdbool.h>
 
-// È­¸é Å©±â(¸Ê Å©±âx. ¸Ê + »óÅÂÃ¢)
+// í™”ë©´ í¬ê¸°(ë§µ í¬ê¸°x. ë§µ + ìƒíƒœì°½)
 #define ROW_MAX		40
 #define COL_MAX		80
 
-// ´õºí ¹öÆÛ¸µ
-// back_buf[][]°¡ ¸ÊÀÌ°í, 
-// front_buf[][]´Â È­¸é¿¡ Ãâ·ÂÇÏ±â À§ÇÑ Á¤º¸
-// Âü°í: https://codevang.tistory.com/39
-// À©µµ¿ìAPI·Îµµ °¡´É: https://game-happy-world.tistory.com/46
+// ë”ë¸” ë²„í¼ë§
+// back_buf[][]ê°€ ë§µì´ê³ , 
+// front_buf[][]ëŠ” í™”ë©´ì— ì¶œë ¥í•˜ê¸° ìœ„í•œ ì •ë³´
+// ì°¸ê³ : https://codevang.tistory.com/39
+// ìœˆë„ìš°APIë¡œë„ ê°€ëŠ¥: https://game-happy-world.tistory.com/46
 char front_buf[ROW_MAX][COL_MAX];
 char back_buf[ROW_MAX][COL_MAX];
 
-// ¸Ê Å©±â(À§ÀÇ buf´Â ÅØ½ºÆ®±îÁö Æ÷ÇÔÇÑ Äµ¹ö½º Å©±â)
+// ë§µ í¬ê¸°(ìœ„ì˜ bufëŠ” í…ìŠ¤íŠ¸ê¹Œì§€ í¬í•¨í•œ ìº”ë²„ìŠ¤ í¬ê¸°)
 int N_ROW, N_COL;
+
+
+//ì£½ì€ í”Œë˜ì´ì–´ 
+int kill_player_1[10];
+
+
 
 void map_init(int n_row, int n_col);
 void dialog(char message[]);
@@ -24,5 +30,7 @@ bool placable(int row, int col);
 void display(void);
 void gotoxy(int x, int y);
 void printxy(char ch, int row, int col);
+void kill_player_num(int kill_num[]);
+
 
 #endif
