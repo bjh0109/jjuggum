@@ -1,4 +1,4 @@
-#ifndef _JJUGGUMI_H_
+﻿#ifndef _JJUGGUMI_H_
 #define _JJUGGUMI_H_
 
 #include <Windows.h>
@@ -34,12 +34,13 @@ typedef struct {
 	int y;
 } Point;
 
-
+bool pass_player[PLAYER_MAX];
 
 void text_color(int color);
 void print_color_text(char const* const text, int color);
 void intro_color(char const* const text, int color);
 void intro(void);
+void ending(void);
 
 // 미니게임
 
