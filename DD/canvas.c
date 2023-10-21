@@ -1,4 +1,4 @@
-ï»¿#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,20 +13,20 @@
 void draw(void);
 void print_status(void);
 
-// (zero-base) rowí–‰, colì—´ë¡œ ì»¤ì„œ ì´ë™
+// (zero-base) rowÇà, col¿­·Î Ä¿¼­ ÀÌµ¿
 void gotoxy(int row, int col) {
 	COORD pos = { col,row };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
-// rowí–‰, colì—´ì— ch ì¶œë ¥
+// rowÇà, col¿­¿¡ ch Ãâ·Â
 void printxy(char ch, int row, int col) {
 	gotoxy(row, col);
 	printf("%c", ch);
 }
 
 void map_init(int n_row, int n_col) {
-	// ë‘ ë²„í¼ë¥¼ë¥¼ ì™„ì „íˆ ë¹„ìš°ê¸°
+	// µÎ ¹öÆÛ¸¦¸¦ ¿ÏÀüÈ÷ ºñ¿ì±â
 	for (int i = 0; i < ROW_MAX; i++) {
 		for (int j = 0; j < COL_MAX; j++) {
 			back_buf[i][j] = front_buf[i][j] = ' ';
@@ -37,7 +37,7 @@ void map_init(int n_row, int n_col) {
 	N_COL = n_col;
 	for (int i = 0; i < N_ROW; i++) {
 
-		// ëŒ€ì…ë¬¸ ì´ë ‡ê²Œ ì“¸ ìˆ˜ ìˆëŠ”ë° ì¼ë¶€ëŸ¬ ì•ˆ ê°€ë¥´ì³ì¤¬ìŒ
+		// ´ëÀÔ¹® ÀÌ·¸°Ô ¾µ ¼ö ÀÖ´Âµ¥ ÀÏºÎ·¯ ¾È °¡¸£ÃÄÁáÀ½
 		back_buf[i][0] = back_buf[i][N_COL - 1] = '*';
 
 		for (int j = 1; j < N_COL - 1; j++) {
@@ -46,7 +46,7 @@ void map_init(int n_row, int n_col) {
 	}
 }
 
-// back_buf[row][col]ì´ ì´ë™í•  ìˆ˜ ìˆëŠ” ìë¦¬ì¸ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
+// back_buf[row][col]ÀÌ ÀÌµ¿ÇÒ ¼ö ÀÖ´Â ÀÚ¸®ÀÎÁö È®ÀÎÇÏ´Â ÇÔ¼ö
 bool placable(int row, int col) {
 	if (row < 0 || row >= N_ROW ||
 		col < 0 || col >= N_COL ||
@@ -56,14 +56,14 @@ bool placable(int row, int col) {
 	return true;
 }
 
-// ìƒë‹¨ì— ë§µì„, í•˜ë‹¨ì—ëŠ” í˜„ì¬ ìƒíƒœë¥¼ ì¶œë ¥
+// »ó´Ü¿¡ ¸ÊÀ», ÇÏ´Ü¿¡´Â ÇöÀç »óÅÂ¸¦ Ãâ·Â
 void display(void) {
 	draw();
-	gotoxy(N_ROW + 4, 0);  // ì¶”ê°€ë¡œ í‘œì‹œí•  ì •ë³´ê°€ ìˆìœ¼ë©´ ë§µê³¼ ìƒíƒœì°½ ì‚¬ì´ì˜ ë¹ˆ ê³µê°„ì— ì¶œë ¥
+	gotoxy(N_ROW + 4, 0);  // Ãß°¡·Î Ç¥½ÃÇÒ Á¤º¸°¡ ÀÖÀ¸¸é ¸Ê°ú »óÅÂÃ¢ »çÀÌÀÇ ºó °ø°£¿¡ Ãâ·Â
 	print_status();
 }
 
-//ë°±ë²„í¼ ì™€ í”„ë¡ íŠ¸ ë²„í¼ë¥¼ ë¹„êµí•˜ì—¬ ê°™ì§€ ì•Šìœ¼ë©´ ê°™ê²Œ ë§Œë“¤ê³  printxyë¥¼ ì‚¬ìš©í•´ ë‹¤ë¥¸ë¶€ë¶„ì„ ì…ë ¥ í•´ì¤€ë‹¤.
+//¹é¹öÆÛ ¿Í ÇÁ·ĞÆ® ¹öÆÛ¸¦ ºñ±³ÇÏ¿© °°Áö ¾ÊÀ¸¸é °°°Ô ¸¸µé°í printxy¸¦ »ç¿ëÇØ ´Ù¸¥ºÎºĞÀ» ÀÔ·Â ÇØÁØ´Ù.
 void draw(void) {
 	for (int row = 0; row < N_ROW; row++) {
 		for (int col = 0; col < N_COL; col++) {
@@ -89,18 +89,15 @@ void print_status(void) {
 void kill_player_num(int kill_num[]) {
 		for (int j = 0; j < n_player; j++) {
 			if (kill_num[j] != -1) {
-				printf("%dë²ˆ ", kill_num[j]);
+				printf("%d¹ø ", kill_num[j]);
 			}
 		}
 }
 
 
 
-
-
-
 void dialog(char message[]) {
-    // í˜„ì¬ ë²„í¼ ìƒíƒœ ì €ì¥
+    // ÇöÀç ¹öÆÛ »óÅÂ ÀúÀå
     char temp_buf[ROW_MAX][COL_MAX];
     int center_row = N_ROW / 2;
     int center_col = N_COL / 2;
@@ -112,7 +109,7 @@ void dialog(char message[]) {
 
    memcpy(temp_buf, back_buf, sizeof(back_buf));
 
-    // ëŒ€í™” ìƒìë¥¼ í•œ ë²ˆë§Œ í‘œì‹œ
+    // ´ëÈ­ »óÀÚ¸¦ ÇÑ ¹ø¸¸ Ç¥½Ã
     for (int i = DIALOG_DURATION_SEC; i >= 0; --i) {
         if (i != DIALOG_DURATION_SEC) {
             Sleep(1000);
@@ -137,7 +134,6 @@ void dialog(char message[]) {
         gotoxy(center_row , box_start_col + 1);
         printf("%d ", i);
 
-		//ì´ë¶€ë¶„ì— íƒˆë½ìë¥¼ ë°›ëŠ” í•¨ìˆ˜ë¥¼ ì ì–´ì„œ ë„£ê¸°
 		gotoxy(center_row + 1, box_start_col + 3);
 		kill_player_num(kill_player_1);
 
@@ -156,7 +152,7 @@ void dialog(char message[]) {
 		printf(" ");
 	}
 
-    // ì›ë˜ ìƒíƒœë¡œ ë³µêµ¬
+    // ¿ø·¡ »óÅÂ·Î º¹±¸
     for (int i = 0; i < ROW_MAX; i++) {
         for (int j = 0; j < COL_MAX; j++) {
             back_buf[i][j] = temp_buf[i][j];
