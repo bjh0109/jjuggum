@@ -10,6 +10,7 @@
 
 
 bool pass_player[PLAYER_MAX];
+bool dialog_player[PLAYER_MAX];
 
 
 void sample_init_1(void);
@@ -18,12 +19,17 @@ void move_random_1(int i, int dir);
 void move_tail_2(int i, int nx, int ny);
 void young();
 void kill(int p);
-void kill_dialog(void);
+void haha();
+
 int px[PLAYER_MAX], py[PLAYER_MAX], period[PLAYER_MAX];  // 각 플레이어 위치, 이동 주기
 
-
+int kill_point = 0;
 int b = 0;
 int c = 0;
+int kill_1[10];
+
+
+
 void sample_init_1(void) {
 	map_init(14, 30);
 	int x, y;
@@ -47,7 +53,9 @@ void sample_init_1(void) {
 		pass_player[i] = false;
 	}
 
-
+	for (int i = 0; i < n_player; i++) {
+		dialog_player[i] = false;
+	}
 
 
 
@@ -81,7 +89,7 @@ void move_manual_1(key_t key) {
 		display();
 		Sleep(500);
 		kill(0);
-		//kill_dialog();
+		kill_point += 1;
 	}
 	else {
 		move_tail_2(0, nx, ny);
@@ -127,7 +135,7 @@ void move_random_1(int player, int dir) {
 		display();
 		Sleep(500);
 		kill(p);
-		//kill_dialog();
+		kill_point += 1;
 	}
 	else if(b == 0){
 		move_tail_2(p, nx, ny);
@@ -135,13 +143,6 @@ void move_random_1(int player, int dir) {
 }
 
 
-void kill_dialog(void) {
-	for (int i = 0; i < n_player; i++) {
-		if (player[i] == false) {
-			dialog("탈락");
-		}
-	}
-}
 
 void move_tail_2(int player, int nx, int ny) {
 	int p = player;  // 이름이 길어서...
@@ -229,18 +230,42 @@ void young() {
 			printf(" ");
 			b = 0;
 		}
-		tick = 0;
+		tick = 0; 
+		dialog("탈락");
 
 
 	}
-
-
 }
 
 void kill(int p) {
 			back_buf[px[p]][py[p]] = ' ';
 			player[p] = false;
+
+			for (int i = 0; i < n_player; i++) {
+				kill_player_1[i] = -1; // 모든 요소를 -1로 초기화
+			}
+
+			for (int p = 0; p < n_player; p++) {
+				if (player[p] == false && dialog_player[p]== false) {
+					kill_player_1[p] = p;
+
+				}
+			}
 		}
+
+
+
+void haha() {
+	for (int j = 0; j < n_player; j++) {
+		if (kill_player_1[j] != -1 && tick % 7000 == 0) {
+			dialog_player[j] = true;
+		}
+	}
+}
+
+
+
+
 
 void pass1() {
 	for (int i = 0; i < n_player; i++) {
@@ -309,5 +334,6 @@ void mugunghwa(void) {
 		Sleep(10);
 		tick += 10;
 		young();
+		haha();
 	}
 }

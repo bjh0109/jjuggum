@@ -1,11 +1,11 @@
-#define _CRT_SECURE_NO_WARNINGS
+﻿#define _CRT_SECURE_NO_WARNINGS
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <Windows.h>
 #include "jjuggumi.h"
 #include "canvas.h"
-
+ 
 
 #define DIALOG_DURATION_SEC		4
 
@@ -83,6 +83,22 @@ void print_status(void) {
 	}
 }
 
+
+
+
+void kill_player_num(int kill_num[]) {
+		for (int j = 0; j < n_player; j++) {
+			if (kill_num[j] != -1) {
+				printf("%d번 ", kill_num[j]);
+			}
+		}
+}
+
+
+
+
+
+
 void dialog(char message[]) {
     // 현재 버퍼 상태 저장
     char temp_buf[ROW_MAX][COL_MAX];
@@ -114,12 +130,16 @@ void dialog(char message[]) {
             }
         }
 
+		
 
         gotoxy(center_row , box_start_col + 3);
         printf("%s", message);
         gotoxy(center_row , box_start_col + 1);
-
         printf("%d ", i);
+
+		//이부분에 탈락자를 받는 함수를 적어서 넣기
+		gotoxy(center_row + 1, box_start_col + 3);
+		kill_player_num(kill_player_1);
 
         draw();
     }
@@ -130,6 +150,11 @@ void dialog(char message[]) {
     for (int disappear = 0; disappear < msg_length + 2; disappear++) {
         printf(" ");
     }
+	
+	gotoxy(center_row+ 1, 2);
+	for (int disappear = 0; disappear < 20; disappear++) {
+		printf(" ");
+	}
 
     // 원래 상태로 복구
     for (int i = 0; i < ROW_MAX; i++) {
