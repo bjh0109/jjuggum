@@ -89,7 +89,7 @@ void print_status(void) {
 void kill_player_num(int kill_num[]) {
 		for (int j = 0; j < n_player; j++) {
 			if (kill_num[j] != -1) {
-				printf("%d¹ø ", kill_num[j]);
+				printf("%d ", kill_num[j]);
 			}
 		}
 }
